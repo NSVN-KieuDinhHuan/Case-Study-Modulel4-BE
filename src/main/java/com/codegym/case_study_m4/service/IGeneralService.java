@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import java.util.Optional;
 
 public interface IGeneralService<T> {
-    Iterable<T> findAll();
+    Page<T> findAll();
 
     Optional<T> findById(Long id);
 
