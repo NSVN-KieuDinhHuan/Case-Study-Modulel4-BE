@@ -24,6 +24,5 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private List<Role> roles;
-    @OneToMany
-    private List<Wallet> wallets;
+
 }

@@ -18,6 +18,8 @@ public class Deposit {
     private Long id;
     private Double amount;
     private Date date;
-    private Long wallet_id;
     private String note;
+    @ManyToOne
+    private Wallet wallet;
+
 }

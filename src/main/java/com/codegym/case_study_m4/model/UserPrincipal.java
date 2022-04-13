@@ -20,7 +20,7 @@ public class UserPrincipal implements UserDetails {
     private String password;
     private String image;
     private List<? extends GrantedAuthority> roles;
-    private List<Wallet> wallets;
+
 
     public static UserPrincipal build(User user) {
         List<Role> roles = user.getRoles(); //Lấy ra role của user
@@ -33,8 +33,7 @@ public class UserPrincipal implements UserDetails {
                 user.getName(),
                 user.getPassword(),
                 user.getImage(),
-                authorities,
-                user.getWallets()
+                authorities
                 );
     }
 

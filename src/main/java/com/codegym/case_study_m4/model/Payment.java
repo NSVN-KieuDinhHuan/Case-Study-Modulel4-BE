@@ -20,4 +20,6 @@ public class Payment {
     private Date date;
     @ManyToOne
     private PaymentCategory paymentCategory;
+    @ManyToOne
+    private  Wallet wallet;
 }
