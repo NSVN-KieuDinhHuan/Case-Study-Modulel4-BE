@@ -1,5 +1,7 @@
-package com.codegym.case_study_m4.model;
+package com.codegym.case_study_m4.model.dto;
 
+import com.codegym.case_study_m4.model.Role;
+import com.codegym.case_study_m4.model.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

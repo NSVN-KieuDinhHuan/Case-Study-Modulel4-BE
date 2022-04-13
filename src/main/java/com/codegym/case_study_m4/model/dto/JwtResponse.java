@@ -1,4 +1,4 @@
-package com.codegym.case_study_m4.model;
+package com.codegym.case_study_m4.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
