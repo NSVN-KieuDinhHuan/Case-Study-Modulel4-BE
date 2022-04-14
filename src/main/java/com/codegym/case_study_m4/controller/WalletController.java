@@ -77,7 +77,7 @@ public class WalletController {
         if (!walletOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        walletService.removeById(id);
+        walletService.deleteWallet(id);
         return new ResponseEntity<>(walletOptional.get(), HttpStatus.OK);
     }
 }

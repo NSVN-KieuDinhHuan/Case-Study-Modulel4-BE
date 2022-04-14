@@ -9,4 +9,6 @@ public interface IWalletService extends IGeneralService<Wallet> {
     Iterable<Wallet> findAll();
 
     Iterable<Wallet> findWalletByNameContaining(String s);
+
+    void deleteWallet(Long id);
 }
