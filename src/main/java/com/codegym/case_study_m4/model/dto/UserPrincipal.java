@@ -1,5 +1,7 @@
-package com.codegym.case_study_m4.model;
+package com.codegym.case_study_m4.model.dto;
 
+import com.codegym.case_study_m4.model.Role;
+import com.codegym.case_study_m4.model.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,11 +18,12 @@ public class UserPrincipal implements UserDetails {
     private Long id;
 
     private String name;
-
+    private String email;
     private String password;
+
     private String image;
     private List<? extends GrantedAuthority> roles;
-    private List<Wallet> wallets;
+
 
     public static UserPrincipal build(User user) {
         List<Role> roles = user.getRoles(); //Lấy ra role của user
@@ -31,10 +34,10 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getName(),
+                user.getEmail(),
                 user.getPassword(),
                 user.getImage(),
-                authorities,
-                user.getWallets()
+                authorities
                 );
     }
 
@@ -55,21 +58,21 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

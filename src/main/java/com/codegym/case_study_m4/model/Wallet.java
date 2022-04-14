@@ -19,8 +19,6 @@ public class Wallet {
     private String name;
     private String icon;
     private Double currentAmount;
-    @OneToMany
-    private List<Deposit> deposits;
-    @OneToMany
-    private List<Payment> payments;
+    @ManyToOne
+    private User user;
 }
