@@ -35,6 +35,12 @@ public class PaymentController {
         Page<Payment> payments = paymentService.findAll(pageable);
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
+    @GetMapping("/{user}")
+    public ResponseEntity<Page<Payment>> showAllPaymentByUser(@RequestParam(defaultValue = "0") Integer page, @PathVariable Long user){
+        PageRequest pageable = PageRequest.of(page,3);
+        Page<Payment> payments = paymentService.findAll(pageable);
+        return new ResponseEntity<>(payments, HttpStatus.OK);
+    }
     @GetMapping ("/{id}")
     public ResponseEntity<Payment> findPaymentByID(@PathVariable Long id){
         Optional<Payment> payment = paymentService.findById(id);
