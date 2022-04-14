@@ -34,4 +34,8 @@ public class DepositService implements IDepositService{
         depositRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Deposit> findAllDepositByUser(Long id, Pageable pageable) {
+        return depositRepository.findAllDepositByUser(id, pageable);
+    }
 }
