@@ -27,6 +27,7 @@ public class PaymentCategoryController {
     @PostMapping
     public ResponseEntity<PaymentCategory> save(@RequestBody PaymentCategory paymentCategory){
         PaymentCategory paymentCategory1 = new PaymentCategory(paymentCategory.getId(),paymentCategory.getName());
+
         return new ResponseEntity<>(paymentCategoryService.save(paymentCategory1),HttpStatus.CREATED);
     }
 

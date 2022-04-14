@@ -1,6 +1,7 @@
 package com.codegym.case_study_m4.controller;
 
 import com.codegym.case_study_m4.model.Payment;
+import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.model.dto.PaymentForm;
 import com.codegym.case_study_m4.service.payment.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,12 @@ public class PaymentController {
 //            e.printStackTrace();
 //        }
 //        Payment payment = new Payment(paymentForm.getId(), paymentForm.getAmount(), paymentForm.getDate(), fileName, paymentForm.getPaymentCategory(),paymentForm.getWallet());
-        return new ResponseEntity<>(paymentService.save(payment),HttpStatus.CREATED);
+        Payment payment1 = paymentService.save(payment);
+        String name = payment1.getPaymentCategory().getName();
+        Wallet wallet = payment1.getWallet();
+        Double newWalletAmount = wallet.getCurrentAmount() - payment.getAmount();
+        wallet.setCurrentAmount(newWalletAmount);
+        return new ResponseEntity<>(payment1,HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Payment> editPayment(@PathVariable Long id, @RequestBody Payment payment){
