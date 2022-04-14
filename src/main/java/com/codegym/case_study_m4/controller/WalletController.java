@@ -38,11 +38,11 @@ public class WalletController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Wallet> findById(@PathVariable Long id) {
-        Optional<Wallet> productOptional = walletService.findById(id);
-        if (!productOptional.isPresent()) {
+        Optional<Wallet> walletOptional = walletService.findById(id);
+        if (!walletOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
+        return new ResponseEntity<>(walletOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
@@ -77,7 +77,7 @@ public class WalletController {
         if (!walletOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        walletService.removeById(id);
+        walletService.deleteWallet(id);
         return new ResponseEntity<>(walletOptional.get(), HttpStatus.OK);
     }
 }
