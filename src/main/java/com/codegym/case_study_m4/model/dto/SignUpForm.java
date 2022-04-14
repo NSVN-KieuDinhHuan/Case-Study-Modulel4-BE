@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -17,6 +18,8 @@ public class SignUpForm {
     @Size(min=5,max=12)
     @UniqueUsername()
     private String name;
+    @Email
+    private String email;
     @PasswordConfirm
     private PasswordForm passwordForm;
 
