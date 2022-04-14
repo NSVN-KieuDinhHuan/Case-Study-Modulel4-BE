@@ -12,7 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class JwtResponse {
     private Long id;
-    private String token; //jwt
+    private String token;
     private String type = "Bearer";
     private String name;
     private Collection<? extends GrantedAuthority> roles;
