@@ -21,7 +21,7 @@ public class PaymentCategoryService implements IPaymentCategoryService {
 
     @Override
     public Optional<PaymentCategory> findById(Long id) {
-        return Optional.empty();
+        return paymentCategoryRepository.findById(id);
     }
 
     @Override
