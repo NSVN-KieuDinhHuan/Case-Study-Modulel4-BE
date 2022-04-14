@@ -16,6 +16,7 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/deposits")
 public class DepositController {
+
     @Autowired
     private IDepositService depositService;
 
@@ -25,7 +26,14 @@ public class DepositController {
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 
-    @PostMapping
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Page<Deposit>> findAllDepositByUser(@PathVariable Long id, @PageableDefault (value = 5) Pageable pageable) {
+        Page<Deposit> deposits = depositService.findAllDepositByUser(id, pageable);
+        return new ResponseEntity<>(deposits, HttpStatus.OK);
+    }
+
+
+    @PostMapping()
     public ResponseEntity<Deposit> saveDeposit(@RequestBody Deposit deposit) {
         return new ResponseEntity<>(depositService.save(deposit), HttpStatus.CREATED);
     }
