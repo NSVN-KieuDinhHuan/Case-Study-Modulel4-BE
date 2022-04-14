@@ -33,4 +33,9 @@ public class PaymentCategoryService implements IPaymentCategoryService {
     public void removeById(Long id) {
         paymentCategoryRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<PaymentCategory> findAllCategory() {
+        return paymentCategoryRepository.findAll();
+    }
 }

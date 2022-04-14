@@ -20,8 +20,8 @@ public class PaymentCategoryController {
     private IPaymentCategoryService paymentCategoryService;
 
     @GetMapping
-    public ResponseEntity<Page<PaymentCategory>>getAllPaymentCategory(){
-        return new ResponseEntity<>(paymentCategoryService.findAll(PageRequest.of(1,5)), HttpStatus.OK);
+    public ResponseEntity<Iterable<PaymentCategory>>getAllPaymentCategory(){
+        return new ResponseEntity<>(paymentCategoryService.findAllCategory(), HttpStatus.OK);
     }
 
     @PostMapping
