@@ -27,6 +27,12 @@ public class PaymentCategoryController {
         return new ResponseEntity<>(paymentCategoryService.findAllCategory(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PaymentCategory>findById(@PathVariable Long id){
+        Optional<PaymentCategory>paymentCategoryOptional = paymentCategoryService.findById(id);
+        return new ResponseEntity<>(paymentCategoryOptional.get(), HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<PaymentCategory> save(@RequestBody PaymentCategory paymentCategory){
         PaymentCategory paymentCategory1 = new PaymentCategory(paymentCategory.getId(),paymentCategory.getName());
@@ -35,12 +41,22 @@ public class PaymentCategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PaymentCategory> updateProduct(@PathVariable Long id, @RequestBody PaymentCategory newPaymentCategory) {
-        Optional<PaymentCategory> productOptional = paymentCategoryService.findById(id);
-        if (!productOptional.isPresent()) {
+    public ResponseEntity<PaymentCategory> updatePaymentCategory(@PathVariable Long id, @RequestBody PaymentCategory newPaymentCategory) {
+        Optional<PaymentCategory> paymentCategoryOptional = paymentCategoryService.findById(id);
+        if (!paymentCategoryOptional.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         newPaymentCategory.setId(id);
         return new ResponseEntity<>(paymentCategoryService.save(newPaymentCategory), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<PaymentCategory> deletePaymentCategory(@PathVariable Long id){
+        Optional<PaymentCategory> paymentCategoryOptional = paymentCategoryService.findById(id);
+        if (!paymentCategoryOptional.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        paymentCategoryService.removeById(id);
+        return new ResponseEntity<>(paymentCategoryOptional.get(),HttpStatus.OK);
     }
 }
