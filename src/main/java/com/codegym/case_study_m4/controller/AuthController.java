@@ -58,7 +58,7 @@ public class AuthController {
         if (!user.getPasswordForm().getPassword().equals(user.getPasswordForm().getConfirmPassword())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        User user1 = new User(user.getName(), user.getPasswordForm().getPassword());
+        User user1 = new User(user.getName(),user.getEmail(), user.getPasswordForm().getPassword());
         return new ResponseEntity<>(userService.save(user1), HttpStatus.CREATED);
     }
 }

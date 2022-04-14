@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.List;
 
 @Entity
@@ -18,6 +19,8 @@ public class User {
     private Long id;
     @Column(columnDefinition = "VARCHAR(12)", nullable = false, unique = true)
     private String name;
+    @Column(columnDefinition = "VARCHAR(50)", nullable = false, unique = true)
+    private String email;
     @Column(nullable = false)
     private String password;
     private String image;
@@ -26,9 +29,14 @@ public class User {
     @JoinTable(name = "user_role")
     private List<Role> roles;
 
-    public User(String name, String password) {
+    public User(String name,  String password) {
         this.name = name;
         this.password = password;
     }
 
+    public User(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }
