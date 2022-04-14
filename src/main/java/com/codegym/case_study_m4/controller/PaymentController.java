@@ -3,6 +3,7 @@ package com.codegym.case_study_m4.controller;
 import com.codegym.case_study_m4.model.Payment;
 import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.model.dto.PaymentForm;
+import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import com.codegym.case_study_m4.service.payment.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,8 @@ import java.util.Optional;
 public class PaymentController {
     @Autowired
     private IPaymentService paymentService;
+    @Autowired
+    private IWalletService walletService;
     @Value("${file-upload}")
     private String uploadPath;
     @GetMapping
@@ -51,12 +54,13 @@ public class PaymentController {
 //            e.printStackTrace();
 //        }
 //        Payment payment = new Payment(paymentForm.getId(), paymentForm.getAmount(), paymentForm.getDate(), fileName, paymentForm.getPaymentCategory(),paymentForm.getWallet());
-        Payment payment1 = paymentService.save(payment);
-        String name = payment1.getPaymentCategory().getName();
-        Wallet wallet = payment1.getWallet();
-        Double newWalletAmount = wallet.getCurrentAmount() - payment.getAmount();
-        wallet.setCurrentAmount(newWalletAmount);
-        return new ResponseEntity<>(payment1,HttpStatus.CREATED);
+        Payment newPayment = paymentService.save(payment);
+        Wallet wallet = (walletService.findById(newPayment.getWallet().getId())).get();
+        Double currentAmount = wallet.getCurrentAmount();
+        Double newAmount = currentAmount - payment.getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
+        return new ResponseEntity<>(newPayment,HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Payment> editPayment(@PathVariable Long id, @RequestBody Payment payment){
