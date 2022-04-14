@@ -1,5 +1,7 @@
-package com.codegym.case_study_m4.model;
+package com.codegym.case_study_m4.model.dto;
 
+import com.codegym.case_study_m4.model.Role;
+import com.codegym.case_study_m4.model.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,8 +18,9 @@ public class UserPrincipal implements UserDetails {
     private Long id;
 
     private String name;
-
+    private String email;
     private String password;
+
     private String image;
     private List<? extends GrantedAuthority> roles;
 
@@ -31,6 +34,7 @@ public class UserPrincipal implements UserDetails {
         return new UserPrincipal(
                 user.getId(),
                 user.getName(),
+                user.getEmail(),
                 user.getPassword(),
                 user.getImage(),
                 authorities

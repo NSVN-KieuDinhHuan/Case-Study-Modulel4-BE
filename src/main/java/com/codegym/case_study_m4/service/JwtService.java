@@ -1,6 +1,6 @@
 package com.codegym.case_study_m4.service;
 
-import com.codegym.case_study_m4.model.UserPrincipal;
+import com.codegym.case_study_m4.model.dto.UserPrincipal;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

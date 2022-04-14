@@ -1,8 +1,9 @@
 package com.codegym.case_study_m4.controller;
 
-import com.codegym.case_study_m4.model.JwtResponse;
+import com.codegym.case_study_m4.model.dto.JwtResponse;
 import com.codegym.case_study_m4.model.Role;
 import com.codegym.case_study_m4.model.User;
+import com.codegym.case_study_m4.model.dto.SignUpForm;
 import com.codegym.case_study_m4.service.JwtService;
 import com.codegym.case_study_m4.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +54,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        String password = user.getPassword();
-        String encodePassword = passwordEncoder.encode(password);//Mã hóa pass của người dùng
-        user.setPassword(encodePassword);
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(2L, "ROLE_USER"));
-        user.setRoles(roles);
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    public ResponseEntity<User> register(@Valid @RequestBody SignUpForm user) {
+        if (!user.getPasswordForm().getPassword().equals(user.getPasswordForm().getConfirmPassword())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        User user1 = new User(user.getName(),user.getEmail(), user.getPasswordForm().getPassword());
+        return new ResponseEntity<>(userService.save(user1), HttpStatus.CREATED);
     }
 }

@@ -1,5 +1,6 @@
 package com.codegym.case_study_m4.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double amount;
+    @JsonFormat(pattern = "yyyy/mm/dd")
     private Date date;
+    private String image;
     @ManyToOne
     private PaymentCategory paymentCategory;
     @ManyToOne
