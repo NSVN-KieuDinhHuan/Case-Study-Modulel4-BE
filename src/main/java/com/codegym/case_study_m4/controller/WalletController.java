@@ -6,9 +6,6 @@ import com.codegym.case_study_m4.model.WalletForm;
 import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
@@ -31,8 +28,8 @@ public class WalletController {
 
 
     @GetMapping
-    public ResponseEntity<Page<Wallet>> findAll(@RequestParam(name = "q") Optional<String> q, @PageableDefault Pageable pageable) {
-        Page<Wallet> wallets = walletService.findAll(pageable);
+    public ResponseEntity<Iterable<Wallet>> findAll(@RequestParam(name = "q") Optional<String> q) {
+        Iterable<Wallet> wallets = walletService.findAll();
         if (q.isPresent()) {
             wallets = walletService.findWalletByNameContaining(q.get());
         }
