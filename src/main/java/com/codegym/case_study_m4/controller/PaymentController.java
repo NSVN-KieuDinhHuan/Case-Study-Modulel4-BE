@@ -68,14 +68,27 @@ public class PaymentController {
         walletService.save(wallet);
         return new ResponseEntity<>(paymentService.save(payment),HttpStatus.CREATED);
     }
-    @PutMapping("/{id}")
-    public ResponseEntity<Payment> editPayment(@PathVariable Long id, @RequestBody Payment payment){
-        Optional<Payment> payment1 = paymentService.findById(id);
-        if(!payment1.isPresent()){
+    @PostMapping("/{id}")
+    public ResponseEntity<Payment> editPayment(@PathVariable Long id, @ModelAttribute PaymentForm paymentForm){
+        Optional<Payment> oldPayment = paymentService.findById(id);
+        if(!oldPayment.isPresent()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        payment.setId(id);
-        return new ResponseEntity<>(payment,HttpStatus.OK);
+        MultipartFile multipartFile = paymentForm.getImage();
+        String fileName;
+        if(multipartFile.getSize() == 0){
+            fileName = oldPayment.get().getImage();
+        } else {
+            fileName = multipartFile.getOriginalFilename();
+            fileName = System.currentTimeMillis() + fileName;
+            try {
+                FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Payment newPayment = new Payment(id, paymentForm.getAmount(), paymentForm.getDate(),fileName,paymentForm.getPaymentCategory(), paymentForm.getWallet());
+        return new ResponseEntity<>(paymentService.save(newPayment),HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Payment> deletePayment(@PathVariable Long id){

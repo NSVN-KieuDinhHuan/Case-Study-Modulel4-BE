@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface IPaymentRepository extends JpaRepository<Payment,Long> {
 //    @Modifying
-    @Query(value = "select * from payment join wallets where user_id = ?1", nativeQuery = true)
+    @Query(value = "select * from payment join wallets on payment.wallet_id = wallets.id where user_id = 1", nativeQuery = true)
     Iterable<Payment> findPaymentByUser(Long user_id);
 
 //    @Modifying
