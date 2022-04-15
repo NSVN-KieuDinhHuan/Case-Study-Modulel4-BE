@@ -28,7 +28,7 @@ public class UserService implements IUserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return userRepository.findById(id);
     }
 
     @Override
@@ -58,4 +58,11 @@ public class UserService implements IUserService {
     public User findByName(String name) {
         return userRepository.findByName(name);
     }
+
+    @Override
+    public Page<User> findAllByRoles(String role, Pageable pageable) {
+        return userRepository.findAllByRoles(role,pageable);
+    }
+
+
 }
