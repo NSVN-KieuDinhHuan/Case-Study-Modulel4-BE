@@ -35,11 +35,11 @@ public class PaymentController {
         Page<Payment> payments = paymentService.findAll(pageable);
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
-    @GetMapping("/{user}")
-    public ResponseEntity<Page<Payment>> showAllPaymentByUser(@RequestParam(defaultValue = "0") Integer page, @PathVariable Long user){
-        PageRequest pageable = PageRequest.of(page,3);
-        Page<Payment> payments = paymentService.findAll(pageable);
-        return new ResponseEntity<>(payments, HttpStatus.OK);
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<Iterable<Payment>> findAllPaymentByUser(@PathVariable Long user_id){
+//        PageRequest pageable = PageRequest.of(page,3);
+        Iterable<Payment> payments = paymentService.findPaymentByUser(user_id);
+        return new ResponseEntity<>(payments,HttpStatus.OK);
     }
     @GetMapping ("/{id}")
     public ResponseEntity<Payment> findPaymentByID(@PathVariable Long id){
@@ -50,23 +50,23 @@ public class PaymentController {
         return new ResponseEntity<>(payment.get(),HttpStatus.OK);
     }
     @PostMapping
-    public ResponseEntity<Payment> create(@RequestBody Payment payment){
-//        MultipartFile multipartFile = paymentForm.getImage();
-//        String fileName = multipartFile.getOriginalFilename();
-//        fileName = System.currentTimeMillis() + fileName;
-//        try {
-//            FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + fileName));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        Payment payment = new Payment(paymentForm.getId(), paymentForm.getAmount(), paymentForm.getDate(), fileName, paymentForm.getPaymentCategory(),paymentForm.getWallet());
-        Payment newPayment = paymentService.save(payment);
-        Wallet wallet = (walletService.findById(newPayment.getWallet().getId())).get();
+    public ResponseEntity<Payment> create(@ModelAttribute PaymentForm paymentForm){
+        MultipartFile multipartFile = paymentForm.getImage();
+        String fileName = multipartFile.getOriginalFilename();
+        fileName = System.currentTimeMillis() + fileName;
+        try {
+            FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Payment payment = new Payment(paymentForm.getId(), paymentForm.getAmount(), paymentForm.getDate(), fileName, paymentForm.getPaymentCategory(),paymentForm.getWallet());
+//        Payment newPayment = paymentService.save(payment);
+        Wallet wallet = (walletService.findById(payment.getWallet().getId())).get();
         Double currentAmount = wallet.getCurrentAmount();
         Double newAmount = currentAmount - payment.getAmount();
         wallet.setCurrentAmount(newAmount);
         walletService.save(wallet);
-        return new ResponseEntity<>(newPayment,HttpStatus.CREATED);
+        return new ResponseEntity<>(paymentService.save(payment),HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Payment> editPayment(@PathVariable Long id, @RequestBody Payment payment){

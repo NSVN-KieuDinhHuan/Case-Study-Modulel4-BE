@@ -29,7 +29,7 @@ public class PaymentCategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PaymentCategory>findById(@PathVariable Long id){
-        Optional<PaymentCategory>paymentCategoryOptional = paymentCategoryService.findById(id);
+        Optional<PaymentCategory> paymentCategoryOptional = paymentCategoryService.findById(id);
         return new ResponseEntity<>(paymentCategoryOptional.get(), HttpStatus.OK);
     }
 
