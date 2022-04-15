@@ -33,4 +33,9 @@ public class PaymentService implements IPaymentService{
     public void removeById(Long id) {
         paymentRepository.deleteById(id);
     }
+
+    @Override
+    public Iterable<Payment> findPaymentByUser(Long user_id) {
+        return paymentRepository.findPaymentByUser(user_id);
+    }
 }

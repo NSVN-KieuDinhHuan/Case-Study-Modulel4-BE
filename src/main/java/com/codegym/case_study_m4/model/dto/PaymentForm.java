@@ -20,7 +20,7 @@ import java.util.Date;
 public class PaymentForm {
     private Long id;
     private Double amount;
-    @JsonFormat(pattern = "yyyy/mm/dd")
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date date;
     private MultipartFile image;
     private PaymentCategory paymentCategory;
