@@ -1,9 +1,11 @@
 package com.codegym.case_study_m4.controller;
 
 
+import com.codegym.case_study_m4.model.User;
 import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.model.WalletForm;
 import com.codegym.case_study_m4.service.Wallet.IWalletService;
+import com.codegym.case_study_m4.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class WalletController {
     @Autowired
     private IWalletService walletService;
+    @Autowired
+    private IUserService userService;
 
     @Value("${file-upload}")
     private String uploadPath;
@@ -33,6 +37,16 @@ public class WalletController {
         if (q.isPresent()) {
             wallets = walletService.findWalletByNameContaining(q.get());
         }
+        return new ResponseEntity<>(wallets, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{user_id}")
+    public ResponseEntity<Iterable<Wallet>> findAllByUser(@PathVariable Long user_id){
+        Optional<User> user = userService.findById(user_id);
+        if(!user.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Wallet> wallets = walletService.findAllByUser(user.get());
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 
