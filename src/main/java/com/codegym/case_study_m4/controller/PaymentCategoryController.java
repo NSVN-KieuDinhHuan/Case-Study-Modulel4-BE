@@ -1,6 +1,7 @@
 package com.codegym.case_study_m4.controller;
 
 import com.codegym.case_study_m4.model.PaymentCategory;
+import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import com.codegym.case_study_m4.service.paymentCategory.IPaymentCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class PaymentCategoryController {
     @Autowired
     private IPaymentCategoryService paymentCategoryService;
+    @Autowired
+    private IWalletService walletService;
 
     @GetMapping
     public ResponseEntity<Iterable<PaymentCategory>>getAllPaymentCategory(){
@@ -26,13 +29,14 @@ public class PaymentCategoryController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PaymentCategory>findById(@PathVariable Long id){
-        Optional<PaymentCategory>paymentCategoryOptional = paymentCategoryService.findById(id);
+        Optional<PaymentCategory> paymentCategoryOptional = paymentCategoryService.findById(id);
         return new ResponseEntity<>(paymentCategoryOptional.get(), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<PaymentCategory> save(@RequestBody PaymentCategory paymentCategory){
         PaymentCategory paymentCategory1 = new PaymentCategory(paymentCategory.getId(),paymentCategory.getName());
+
         return new ResponseEntity<>(paymentCategoryService.save(paymentCategory1),HttpStatus.CREATED);
     }
 
