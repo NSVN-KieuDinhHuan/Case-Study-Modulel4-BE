@@ -88,6 +88,10 @@ public class PaymentController {
             }
         }
         Payment newPayment = new Payment(id, paymentForm.getAmount(), paymentForm.getDate(),fileName,paymentForm.getPaymentCategory(), paymentForm.getWallet());
+        Wallet wallet = newPayment.getWallet();
+        Double newAmount = wallet.getCurrentAmount() - oldPayment.get().getAmount() + newPayment.getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
         return new ResponseEntity<>(paymentService.save(newPayment),HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
@@ -97,6 +101,10 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         paymentService.removeById(id);
+        Wallet wallet = payment.get().getWallet();
+        Double newAmount = wallet.getCurrentAmount() + payment.get().getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
         return new ResponseEntity<>(payment.get(),HttpStatus.OK);
     }
 }
