@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,10 @@ public class PaymentService implements IPaymentService{
     @Override
     public Iterable<Payment> findPaymentByUser(Long user_id) {
         return paymentRepository.findPaymentByUser(user_id);
+    }
+
+    @Override
+    public Iterable<Payment> findPaymentByUserAndDate(Long user_id, Date startDate, Date endDate) {
+        return paymentRepository.findPaymentByUserAndDate(user_id,startDate,endDate);
     }
 }

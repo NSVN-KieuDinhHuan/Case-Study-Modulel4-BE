@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -36,9 +37,12 @@ public class PaymentController {
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<Iterable<Payment>> findAllPaymentByUser(@PathVariable Long user_id){
+    public ResponseEntity<Iterable<Payment>> findAllPaymentByUser(@PathVariable Long user_id, @RequestParam Optional<Date> startDate, Optional<Date> endDate){
 //        PageRequest pageable = PageRequest.of(page,3);
         Iterable<Payment> payments = paymentService.findPaymentByUser(user_id);
+        if(startDate.isPresent() & endDate.isPresent()){
+            payments = paymentService.findPaymentByUserAndDate(user_id,startDate.get(),endDate.get());
+        }
         return new ResponseEntity<>(payments,HttpStatus.OK);
     }
     @GetMapping ("/{id}")
