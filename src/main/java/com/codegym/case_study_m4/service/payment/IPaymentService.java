@@ -9,4 +9,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface IPaymentService extends IGeneralService<Payment> {
     Iterable<Payment> findPaymentByUser(Long user_id);
+
 }
