@@ -76,7 +76,7 @@ public class PaymentController {
         }
         MultipartFile multipartFile = paymentForm.getImage();
         String fileName;
-        if(multipartFile.getSize() == 0){
+        if(multipartFile == null){
             fileName = oldPayment.get().getImage();
         } else {
             fileName = multipartFile.getOriginalFilename();
