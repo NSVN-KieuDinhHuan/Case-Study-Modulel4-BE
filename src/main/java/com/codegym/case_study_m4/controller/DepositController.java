@@ -32,17 +32,20 @@ public class DepositController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Iterable<Deposit>> findAllDepositByUser(@PathVariable Long id, @RequestParam(name = "startDate") Optional<String> startDate, @RequestParam(name = "endDate") Optional<String> endDate) {
+    public ResponseEntity<Iterable<Deposit>> findAllDepositByUser(@PathVariable Long id, @RequestParam Optional<String> startDate, Optional<String> endDate) {
         Iterable<Deposit> deposits = depositService.findAllDepositByUser(id);
-        if (startDate.isPresent() && endDate.isPresent()) {
+        if (startDate.isPresent() & endDate.isPresent()) {
             deposits = depositService.findAllDepositByUserAndTime(id, startDate.get(), endDate.get());
         }
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 
     @GetMapping("/wallet/{id}")
-    public ResponseEntity<Iterable<Deposit>> findAllDepositByWallet(@PathVariable Long id, @RequestParam(name = "startDate") String startDate, @RequestParam(name = "endDate") String endDate) {
-        Iterable<Deposit> deposits = depositService.findAllDepositByWallet(id, startDate, endDate);
+    public ResponseEntity<Iterable<Deposit>> findAllDepositByWallet(@PathVariable Long id, @RequestParam(name = "startDate") Optional<String> startDate, @RequestParam(name = "endDate") Optional<String> endDate) {
+        Iterable<Deposit> deposits = depositService.findAllDepositByWallet(id);
+        if (startDate.isPresent() && endDate.isPresent()) {
+            deposits = depositService.findAllDepositByWalletAndTime(id, startDate.get(), endDate.get());
+        }
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 

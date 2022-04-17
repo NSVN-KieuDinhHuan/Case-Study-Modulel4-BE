@@ -9,5 +9,7 @@ public interface IDepositService extends IGeneralService<Deposit> {
 
     Iterable<Deposit> findAllDepositByUserAndTime(Long inputUser_id, String startDate, String endDate);
 
-    Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id, String startDate, String endDate);
+    Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id);
+
+    Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate);
 }

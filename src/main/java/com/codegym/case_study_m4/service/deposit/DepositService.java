@@ -46,8 +46,13 @@ public class DepositService implements IDepositService{
     }
 
     @Override
-    public Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id, String startDate, String endDate) {
-        return depositRepository.findAllDepositByWallet(inputWallet_id, startDate, endDate);
+    public Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id) {
+        return depositRepository.findAllDepositByWallet(inputWallet_id);
+    }
+
+    @Override
+    public Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate) {
+        return depositRepository.findAllDepositByWalletAndTime(inputWallet_id, startDate, endDate);
     }
 
 }
