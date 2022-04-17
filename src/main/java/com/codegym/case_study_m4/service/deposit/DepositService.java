@@ -1,6 +1,7 @@
 package com.codegym.case_study_m4.service.deposit;
 
 import com.codegym.case_study_m4.model.Deposit;
+import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.repository.IDepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,4 +35,8 @@ public class DepositService implements IDepositService{
         depositRepository.deleteById(id);
     }
 
+    @Override
+    public Iterable<Deposit> findAllByWallet(Wallet wallet) {
+        return depositRepository.findAllByWallet(wallet);
+    }
 }

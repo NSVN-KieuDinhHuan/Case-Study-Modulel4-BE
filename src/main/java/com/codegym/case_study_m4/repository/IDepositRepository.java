@@ -1,6 +1,7 @@
 package com.codegym.case_study_m4.repository;
 
 import com.codegym.case_study_m4.model.Deposit;
+import com.codegym.case_study_m4.model.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,6 @@ public interface IDepositRepository extends JpaRepository<Deposit, Long> {
 
     @Query(value = "select user.id, deposit.amount, deposit.date from user join wallets on user.id = wallets.user_id join deposit on wallets.id = deposit.wallet_id where user.id = ?1 and wallets.id = ?2  and date(deposit.date) in (?3, ?4)", nativeQuery = true)
     Iterable<Deposit> findAllDepositInOneWalletBetweenTime(Long user_id, Long wallet_id, String startDate, String endDate);
+
+    Iterable<Deposit> findAllByWallet(Wallet wallet);
 }

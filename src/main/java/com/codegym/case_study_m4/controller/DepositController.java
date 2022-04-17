@@ -1,6 +1,9 @@
 package com.codegym.case_study_m4.controller;
 
 import com.codegym.case_study_m4.model.Deposit;
+import com.codegym.case_study_m4.model.Payment;
+import com.codegym.case_study_m4.model.Wallet;
+import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import com.codegym.case_study_m4.service.deposit.IDepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,8 @@ import java.util.Optional;
 public class DepositController {
     @Autowired
     private IDepositService depositService;
+    @Autowired
+    private IWalletService walletService;
 
     @GetMapping
     public ResponseEntity<Page<Deposit>> findAll(@PageableDefault (value = 5) Pageable pageable){
@@ -57,6 +62,16 @@ public class DepositController {
         }
         depositService.removeById(id);
         return new ResponseEntity<>(depositOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/wallets/{wallet_id}")
+    public ResponseEntity<Iterable<Deposit>> findAllDepositeByWallet(@PathVariable Long wallet_id){
+        Optional<Wallet> wallet = walletService.findById(wallet_id);
+        if(!wallet.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Deposit> deposits = depositService.findAllByWallet(wallet.get());
+        return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 
 }

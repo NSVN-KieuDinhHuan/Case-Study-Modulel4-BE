@@ -1,5 +1,6 @@
 package com.codegym.case_study_m4.service.Wallet;
 
+import com.codegym.case_study_m4.model.Deposit;
 import com.codegym.case_study_m4.model.User;
 import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.repository.IWalletRepository;
@@ -54,4 +55,6 @@ public class WalletService implements IWalletService {
     public Iterable<Wallet> findAllByUser(User user) {
         return walletRepository.findAllByUser(user);
     }
+
+
 }
