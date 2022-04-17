@@ -1,12 +1,15 @@
 package com.codegym.case_study_m4.service.payment;
 
 import com.codegym.case_study_m4.model.Payment;
+import com.codegym.case_study_m4.model.User;
+import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.repository.IPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -36,5 +39,10 @@ public class PaymentService implements IPaymentService{
     @Override
     public Iterable<Payment> findPaymentByUser(Long user_id) {
         return paymentRepository.findPaymentByUser(user_id);
+    }
+
+    @Override
+    public Iterable<Payment> findPaymentByUserAndDate(Long user_id, Date startDate, Date endDate) {
+        return paymentRepository.findPaymentByUserAndDate(user_id,startDate,endDate);
     }
 }

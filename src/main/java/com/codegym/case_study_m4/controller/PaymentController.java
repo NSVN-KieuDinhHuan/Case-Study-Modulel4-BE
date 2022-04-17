@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Optional;
 
 @RestController
@@ -36,9 +37,12 @@ public class PaymentController {
         return new ResponseEntity<>(payments, HttpStatus.OK);
     }
     @GetMapping("/user/{user_id}")
-    public ResponseEntity<Iterable<Payment>> findAllPaymentByUser(@PathVariable Long user_id){
+    public ResponseEntity<Iterable<Payment>> findAllPaymentByUser(@PathVariable Long user_id, @RequestParam Optional<Date> startDate, Optional<Date> endDate){
 //        PageRequest pageable = PageRequest.of(page,3);
         Iterable<Payment> payments = paymentService.findPaymentByUser(user_id);
+        if(startDate.isPresent() & endDate.isPresent()){
+            payments = paymentService.findPaymentByUserAndDate(user_id,startDate.get(),endDate.get());
+        }
         return new ResponseEntity<>(payments,HttpStatus.OK);
     }
     @GetMapping ("/{id}")
@@ -76,7 +80,7 @@ public class PaymentController {
         }
         MultipartFile multipartFile = paymentForm.getImage();
         String fileName;
-        if(multipartFile.getSize() == 0){
+        if(multipartFile == null){
             fileName = oldPayment.get().getImage();
         } else {
             fileName = multipartFile.getOriginalFilename();
@@ -88,6 +92,10 @@ public class PaymentController {
             }
         }
         Payment newPayment = new Payment(id, paymentForm.getAmount(), paymentForm.getDate(),fileName,paymentForm.getPaymentCategory(), paymentForm.getWallet());
+        Wallet wallet = newPayment.getWallet();
+        Double newAmount = wallet.getCurrentAmount() - oldPayment.get().getAmount() + newPayment.getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
         return new ResponseEntity<>(paymentService.save(newPayment),HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
@@ -97,6 +105,10 @@ public class PaymentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         paymentService.removeById(id);
+        Wallet wallet = payment.get().getWallet();
+        Double newAmount = wallet.getCurrentAmount() + payment.get().getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
         return new ResponseEntity<>(payment.get(),HttpStatus.OK);
     }
 }

@@ -9,15 +9,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Repository
 @Transactional
 public interface IPaymentRepository extends JpaRepository<Payment,Long> {
 //    @Modifying
-    @Query(value = "select * from payment join wallets on payment.wallet_id = wallets.id where user_id = 1", nativeQuery = true)
+    @Query(value = "select * from payment join wallets on payment.wallet_id = wallets.id where user_id = ?1", nativeQuery = true)
     Iterable<Payment> findPaymentByUser(Long user_id);
-
-//    @Modifying
-//    @Query(value = "select * from payment join wallets where user_id = ?1", nativeQuery = true)
-//    Page<Payment> findPaymentByUser(Long user_id, Pageable pageable);
+    @Query(value = "select * from payment join wallets on payment.wallet_id = wallets.id where user_id = ?1 and date between ?2 and ?3", nativeQuery = true)
+    Iterable<Payment> findPaymentByUserAndDate(Long user_id, Date startDate, Date endDate);
 
 }
