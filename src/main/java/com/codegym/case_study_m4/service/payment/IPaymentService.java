@@ -12,5 +12,6 @@ import java.util.Date;
 public interface IPaymentService extends IGeneralService<Payment> {
     Iterable<Payment> findPaymentByUser(Long user_id);
     Iterable<Payment> findPaymentByUserAndDate(Long user_id, Date startDate, Date endDate);
+    Iterable<Payment> findAllByWallet(Wallet wallet);
 
 }

@@ -5,6 +5,7 @@ import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.model.dto.PaymentForm;
 import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import com.codegym.case_study_m4.service.payment.IPaymentService;
+import com.codegym.case_study_m4.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,8 @@ public class PaymentController {
     private IPaymentService paymentService;
     @Autowired
     private IWalletService walletService;
+    @Autowired
+    private IUserService userService;
     @Value("${file-upload}")
     private String uploadPath;
     @GetMapping
@@ -44,6 +47,16 @@ public class PaymentController {
             payments = paymentService.findPaymentByUserAndDate(user_id,startDate.get(),endDate.get());
         }
         return new ResponseEntity<>(payments,HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet/{wallet_id}")
+    public ResponseEntity<Iterable<Payment>> findAllPaymentByWallet(@PathVariable Long wallet_id){
+        Optional<Wallet> wallet = walletService.findById(wallet_id);
+        if(!wallet.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Iterable<Payment> payments = paymentService.findAllByWallet(wallet.get());
+        return new ResponseEntity<>(payments, HttpStatus.OK);
     }
     @GetMapping ("/{id}")
     public ResponseEntity<Payment> findPaymentByID(@PathVariable Long id){
