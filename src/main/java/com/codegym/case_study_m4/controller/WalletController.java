@@ -59,6 +59,12 @@ public class WalletController {
         return new ResponseEntity<>(walletOptional.get(), HttpStatus.OK);
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<Wallet>> findAllWalletByUser(@PathVariable Long id) {
+        Iterable<Wallet> wallets = walletService.findAllWalletByUser(id);
+        return new ResponseEntity<>(wallets, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Wallet> save(@ModelAttribute WalletForm walletForm) {
         MultipartFile icon = walletForm.getIcon();
