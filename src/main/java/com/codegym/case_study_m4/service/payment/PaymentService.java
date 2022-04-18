@@ -46,4 +46,9 @@ public class PaymentService implements IPaymentService{
     public Iterable<Payment> findPaymentByUserAndDate(Long user_id, Date startDate, Date endDate) {
         return paymentRepository.findPaymentByUserAndDate(user_id,startDate,endDate);
     }
+
+    @Override
+    public Iterable<Payment> findAllByWallet(Wallet wallet) {
+        return paymentRepository.findAllByWallet(wallet);
+    }
 }

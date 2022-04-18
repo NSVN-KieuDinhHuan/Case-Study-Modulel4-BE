@@ -1,6 +1,7 @@
 package com.codegym.case_study_m4.service.deposit;
 
 import com.codegym.case_study_m4.model.Deposit;
+import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.repository.IDepositRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,8 +37,13 @@ public class DepositService implements IDepositService{
 
 
     @Override
+    public Iterable<Deposit> findAllByWallet(Wallet wallet) {
+        return depositRepository.findAllByWallet(wallet);
+    }
+
+    @Override
     public Iterable<Deposit> findAllDepositByUser(Long inputUser_id) {
-        return depositRepository.findAllDepositByUser(inputUser_id);
+        return findAllDepositByUser(inputUser_id);
     }
 
     @Override
@@ -54,5 +60,4 @@ public class DepositService implements IDepositService{
     public Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate) {
         return depositRepository.findAllDepositByWalletAndTime(inputWallet_id, startDate, endDate);
     }
-
 }
