@@ -21,6 +21,6 @@ public interface IDepositRepository extends JpaRepository<Deposit, Long> {
     @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.id = ?1 order by deposit.date ", nativeQuery = true)
     Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id);
 
-    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.id = ?1 and (date(deposit.date) between (?2) and (?3) order by deposit.date;", nativeQuery = true)
+    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.id = ?1 and (date(deposit.date) between (?2) and (?3)) order by deposit.date;", nativeQuery = true)
     Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate);
 }
