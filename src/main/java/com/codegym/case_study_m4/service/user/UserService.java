@@ -58,4 +58,11 @@ public class UserService implements IUserService {
     public User findByName(String name) {
         return userRepository.findByName(name);
     }
+
+    @Override
+    public Page<User> findAllByRoles(String role, Pageable pageable) {
+        return userRepository.findAllByRoles(role,pageable);
+    }
+
+
 }

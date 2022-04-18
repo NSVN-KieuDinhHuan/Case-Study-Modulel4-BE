@@ -12,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +20,7 @@ import java.util.Date;
 public class PaymentForm {
     private Long id;
     private Double amount;
-    @JsonFormat(pattern = "yyyy/mm/dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
     private Date date;
     private MultipartFile image;
     private PaymentCategory paymentCategory;
