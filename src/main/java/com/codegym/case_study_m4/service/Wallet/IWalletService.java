@@ -14,5 +14,5 @@ public interface IWalletService extends IGeneralService<Wallet> {
 
     void deleteWallet(Long id);
 
-    Iterable<Wallet> findAllByUser(User user);
+    Iterable<Wallet> findAllWalletByUser(Long user_id);
 }

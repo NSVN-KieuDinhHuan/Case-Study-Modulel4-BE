@@ -42,11 +42,11 @@ public class WalletController {
 
     @GetMapping("/user/{user_id}")
     public ResponseEntity<Iterable<Wallet>> findAllByUser(@PathVariable Long user_id){
-        Optional<User> user = userService.findById(user_id);
-        if(!user.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Iterable<Wallet> wallets = walletService.findAllByUser(user.get());
+//        Optional<User> user = userService.findById(user_id);
+//        if(!user.isPresent()){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+        Iterable<Wallet> wallets = walletService.findAllWalletByUser(user_id);
         return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 
@@ -57,6 +57,12 @@ public class WalletController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(walletOptional.get(), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<Wallet>> findAllWalletByUser(@PathVariable Long id) {
+        Iterable<Wallet> wallets = walletService.findAllWalletByUser(id);
+        return new ResponseEntity<>(wallets, HttpStatus.OK);
     }
 
     @PostMapping

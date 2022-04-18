@@ -21,4 +21,16 @@ public interface IDepositRepository extends JpaRepository<Deposit, Long> {
     Iterable<Deposit> findAllDepositInOneWalletBetweenTime(Long user_id, Long wallet_id, String startDate, String endDate);
 
     Iterable<Deposit> findAllByWallet(Wallet wallet);
+    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.id = ?1 order by deposit.date ", nativeQuery = true)
+    Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id);
+
+    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.id = ?1 and (date(deposit.date) between (?2) and (?3) order by deposit.date;", nativeQuery = true)
+    Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate);
+
+    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.user_id = ?1 order by deposit.date", nativeQuery = true)
+    Iterable<Deposit> findAllDepositByUser(Long inputUser_id);
+
+    @Query(value = "select deposit.id, deposit.amount, deposit.date, deposit.note, deposit.wallet_id from deposit join wallets on deposit.wallet_id = wallets.id where wallets.user_id = ?1 and (date(deposit.date) between (?2) and (?3)) order by deposit.date", nativeQuery = true)
+    Iterable<Deposit> findAllDepositByUserAndTime(Long inputUser_id, String startDate, String endDate);
+
 }

@@ -4,7 +4,15 @@ import com.codegym.case_study_m4.model.Deposit;
 import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.service.IGeneralService;
 
+
 public interface IDepositService extends IGeneralService<Deposit> {
 
     Iterable<Deposit> findAllByWallet(Wallet wallet);
+    Iterable<Deposit> findAllDepositByUser(Long inputUser_id);
+
+    Iterable<Deposit> findAllDepositByUserAndTime(Long inputUser_id, String startDate, String endDate);
+
+    Iterable<Deposit> findAllDepositByWallet(Long inputWallet_id);
+
+    Iterable<Deposit> findAllDepositByWalletAndTime(Long inputWallet_id, String startDate, String endDate);
 }
