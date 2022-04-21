@@ -18,6 +18,7 @@ public class SignUpForm {
     @Size(min=5,max=12)
     @UniqueUsername()
     private String name;
+    @NotEmpty
     @Email
     private String email;
     @PasswordConfirm

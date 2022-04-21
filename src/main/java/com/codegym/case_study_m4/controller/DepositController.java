@@ -1,7 +1,6 @@
 package com.codegym.case_study_m4.controller;
 
 import com.codegym.case_study_m4.model.Deposit;
-import com.codegym.case_study_m4.model.Payment;
 import com.codegym.case_study_m4.model.Wallet;
 import com.codegym.case_study_m4.service.Wallet.IWalletService;
 import com.codegym.case_study_m4.service.deposit.IDepositService;
@@ -19,21 +18,48 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RequestMapping("/deposits")
 public class DepositController {
+
     @Autowired
     private IDepositService depositService;
+
     @Autowired
     private IWalletService walletService;
 
     @GetMapping
-    public ResponseEntity<Page<Deposit>> findAll(@PageableDefault (value = 5) Pageable pageable){
+    public ResponseEntity<Page<Deposit>> findAll(@PageableDefault(value = 5) Pageable pageable) {
         Page<Deposit> deposits = depositService.findAll(pageable);
         return new ResponseEntity<>(deposits, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<Deposit> saveDeposit(@RequestBody Deposit deposit) {
+    @GetMapping("/user/{id}")
+    public ResponseEntity<Iterable<Deposit>> findAllDepositByUser(@PathVariable Long id, @RequestParam Optional<String> startDate, Optional<String> endDate) {
+        Iterable<Deposit> deposits = depositService.findAllDepositByUser(id);
+        if (startDate.isPresent() & endDate.isPresent()) {
+            deposits = depositService.findAllDepositByUserAndTime(id, startDate.get(), endDate.get());
+        }
+        return new ResponseEntity<>(deposits, HttpStatus.OK);
+    }
+
+    @GetMapping("/wallet/{id}")
+    public ResponseEntity<Iterable<Deposit>> findAllDepositByWallet(@PathVariable Long id, @RequestParam Optional<String> startDate, Optional<String> endDate) {
+        Iterable<Deposit> deposits = depositService.findAllDepositByWallet(id);
+        if (startDate.isPresent() && endDate.isPresent()) {
+            deposits = depositService.findAllDepositByWalletAndTime(id, startDate.get(), endDate.get());
+        }
+        return new ResponseEntity<>(deposits, HttpStatus.OK);
+    }
+
+
+    @PostMapping()
+    public ResponseEntity<Deposit> save(@RequestBody Deposit deposit) {
+        Wallet wallet = (walletService.findById(deposit.getWallet().getId())).get();
+        double currentAmount = wallet.getCurrentAmount();
+        double newAmount = currentAmount + deposit.getAmount();
+        wallet.setCurrentAmount(newAmount);
+        walletService.save(wallet);
         return new ResponseEntity<>(depositService.save(deposit), HttpStatus.CREATED);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Deposit> findDepositById(@PathVariable Long id) {
@@ -63,15 +89,4 @@ public class DepositController {
         depositService.removeById(id);
         return new ResponseEntity<>(depositOptional.get(), HttpStatus.OK);
     }
-
-    @GetMapping("/wallets/{wallet_id}")
-    public ResponseEntity<Iterable<Deposit>> findAllDepositeByWallet(@PathVariable Long wallet_id){
-        Optional<Wallet> wallet = walletService.findById(wallet_id);
-        if(!wallet.isPresent()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Iterable<Deposit> deposits = depositService.findAllByWallet(wallet.get());
-        return new ResponseEntity<>(deposits, HttpStatus.OK);
-    }
-
 }
